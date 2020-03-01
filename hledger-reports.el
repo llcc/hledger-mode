@@ -519,7 +519,7 @@ isn't switched to."
                                     (- hledger-running-report-months)
                                   (- 1 hledger-running-report-months)))))
          (end-time-string (hledger-format-time (hledger-end-reporting-time))))
-    (hledger-jdo (format "balance %s %s --depth 2 -A -p %s"
+    (hledger-jdo (format "balance %s %s --depth 2 -T -p %s"
                          hledger-top-expense-account
                          hledger-top-income-account
                          (shell-quote-argument
@@ -547,7 +547,7 @@ isn't switched to."
       (when hledger-show-expanded-report
         (goto-char (point-max))
         (insert "\nExpanded Running Report\n=======================\n\n")
-        (hledger-jdo (format "balance %s %s --tree -A -p %s"
+        (hledger-jdo (format "balance %s %s liabilities --tree -T -p %s"
                              hledger-top-expense-account
                              hledger-top-asset-account
                              (shell-quote-argument (format "every %sth day of month from %s to %s"
@@ -559,11 +559,11 @@ isn't switched to."
 
 
 (defun hledger-compute-last-reporting-time ()
-    "Return the time since when we are preparing the report."
-    (let ((day (string-to-number (format-time-string "%d"))))
-      (if (> day hledger-reporting-day)
-          (hledger-nth-of-this-month hledger-reporting-day)
-        (hledger-nth-of-prev-month hledger-reporting-day))))
+  "Return the time since when we are preparing the report."
+  (let ((day (string-to-number (format-time-string "%d"))))
+    (if (> day hledger-reporting-day)
+        (hledger-nth-of-this-month hledger-reporting-day)
+      (hledger-nth-of-prev-month hledger-reporting-day))))
 
 
 (defun hledger-compute-total (accounts-string &optional beg  end)
@@ -705,7 +705,9 @@ three times."
           'cr  (/ liquid-assets (* liabilities 1.0))                ;; Current ratio
           'sr  savings-ratio                                        ;; Savings ratio
           'ytr years-to-retirement                                  ;; Years I will have to keep working for
-          'dr (/ liabilities (* total-assets 1.0)))))               ;; Debt ratio
+          'dr (/ liabilities (* total-assets 1.0)))))
+
+;; Debt ratio
 
 (defun hledger-break-lines (s &optional separator width)
   "Add newline characters to string S.
