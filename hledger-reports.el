@@ -547,7 +547,7 @@ isn't switched to."
       (when hledger-show-expanded-report
         (goto-char (point-max))
         (insert "\nExpanded Running Report\n=======================\n\n")
-        (hledger-jdo (format "balance %s %s liabilities --tree -T -p %s"
+        (hledger-jdo (format "balance %s %s liabilities not:Business --tree -T -p %s"
                              hledger-top-expense-account
                              hledger-top-asset-account
                              (shell-quote-argument (format "every %sth day of month from %s to %s"
@@ -691,20 +691,20 @@ three times."
          (years-to-retirement (hledger-compute-years-to-retirement current-net-worth
                                                                    monthly-total-expenses
                                                                    savings-ratio)))
-    (list 'avg-income (* monthly-income 1.0)                        ;; Monthly income
-          'liquid-assets liquid-assets                              ;; Liquid\
-          'total-assets total-assets                                ;; Total /  Assets
+    (list 'avg-income (* monthly-income 1.0) ;; Monthly income
+          'liquid-assets liquid-assets       ;; Liquid\
+          'total-assets total-assets         ;; Total /  Assets
           'liabilities liabilities
-          'avg-expenses (* monthly-total-expenses 1.0)              ;; Average expenses
-          'avg-monthly-savings monthly-savings                      ;; Average monthly savings
-          'total-assets total-assets                                ;; Total assets as of now
-          'current-net-worth current-net-worth                      ;; Current net worth
+          'avg-expenses (* monthly-total-expenses 1.0) ;; Average expenses
+          'avg-monthly-savings monthly-savings ;; Average monthly savings
+          'total-assets total-assets ;; Total assets as of now
+          'current-net-worth current-net-worth ;; Current net worth
           'efr (/ liquid-assets (* monthly-essential-expenses 1.0)) ;; Emergency-fund-ratio
-          'tfr (/ liquid-assets (* monthly-total-expenses 1.0))     ;; Total-fund ratio | Similar to efr.
-          'br (/ total-assets monthly-total-expenses)               ;; Bankruptcy ratio
-          'cr  (/ liquid-assets (* liabilities 1.0))                ;; Current ratio
-          'sr  savings-ratio                                        ;; Savings ratio
-          'ytr years-to-retirement                                  ;; Years I will have to keep working for
+          'tfr (/ liquid-assets (* monthly-total-expenses 1.0)) ;; Total-fund ratio | Similar to efr.
+          'br (/ total-assets monthly-total-expenses) ;; Bankruptcy ratio
+          'cr  (/ liquid-assets (* liabilities 1.0))  ;; Current ratio
+          'sr  savings-ratio                          ;; Savings ratio
+          'ytr years-to-retirement ;; Years I will have to keep working for
           'dr (/ liabilities (* total-assets 1.0)))))
 
 ;; Debt ratio
